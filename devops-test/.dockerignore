@@ -1,0 +1,4 @@
+docker-compose.yml
+Dockerfile
+.git/*
+.DS_Store
