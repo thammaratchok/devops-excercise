@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  test-app:
+    build: .
+    
+  statsd:
+    image: statsd/statsd:v0.9.0
+    links:
+    - carbon:graphite
+    ports:
+    - 8125:8125/udp
+    - 8126:8126
+
+  graphite-web:
+    image: dockerana/graphite #use `latest` tag since this's the only one in Dockerhub
+    links:
+    - carbon
+    ports:
+    - 8000:8000
+    volumes_from:
+    - carbon
+
+  carbon:
+    image: dockerana/carbon #use `latest` tag since this's the only one in Dockerhub
+    ports:
+    - 2003:2003
+    - 2004:2004
+    - 7002:7002
+    volumes:
+    - /opt/graphite
